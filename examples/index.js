@@ -21,7 +21,7 @@ const provider2 = new ethers.JsonRpcProvider(
 );
 
 const main2 = async () => {
-  const blockNumber = await provider.getBlockNumber();
+  const blockNumber = await provider2.getBlockNumber();
   console.log("blockNumber :>> ", blockNumber);
 };
 
