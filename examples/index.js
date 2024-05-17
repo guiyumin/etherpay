@@ -17,7 +17,7 @@ const main = async () => {
 main();
 
 const provider2 = new ethers.JsonRpcProvider(
-  `https://web3-trial.cloudflare-eth.com/v1/mainnet`
+  `https://ether-gateway.etherpay.dev/v1/mainnet`
 );
 
 const main2 = async () => {
