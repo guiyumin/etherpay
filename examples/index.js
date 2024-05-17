@@ -15,3 +15,14 @@ const main = async () => {
 };
 
 main();
+
+const provider2 = new ethers.JsonRpcProvider(
+  `https://web3-trial.cloudflare-eth.com/v1/mainnet`
+);
+
+const main2 = async () => {
+  const blockNumber = await provider.getBlockNumber();
+  console.log("blockNumber :>> ", blockNumber);
+};
+
+main2();
