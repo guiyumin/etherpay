@@ -9,7 +9,7 @@ const provider2 = new ethers.JsonRpcProvider(
   `https://ether-gateway.etherpay.dev/v1/mainnet`
 );
 
-const address = "0x73BCEb1Cd57C711feaC4224D062b0F6ff338501e";
+const address = "0xE2EE418Ff6C26f03dE772DE719Dd2644Af39942C";
 
 const main = async () => {
   const balance = await provider2.getBalance(address);
