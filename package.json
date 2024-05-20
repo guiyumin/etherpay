@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@arco-design/web-react": "^2.62.1",
     "ethers": "^6.12.1",
     "next": "14.2.3",
     "react": "^18",
