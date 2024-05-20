@@ -8,14 +8,14 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <Form style={{ width: 600 }} autoComplete="off" layout="vertical">
-        <FormItem label="Username">
+        <FormItem label="USDT ERC20 Address">
           <Input placeholder="please enter your username..." />
         </FormItem>
-        <FormItem label="Post">
-          <Input placeholder="please enter your post..." />
+        <FormItem label="Amount">
+          <Input addBefore="$" placeholder="please enter the amount" />
         </FormItem>
         <FormItem>
-          <Checkbox>I have read the manual</Checkbox>
+          <Checkbox>I&#39;m aware of the risk</Checkbox>
         </FormItem>
         <FormItem>
           <Button type="primary">Next</Button>
