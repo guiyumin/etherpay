@@ -1,7 +1,13 @@
 "use client";
 
 import styles from "./page.module.css";
-import { Form, Input, Button, Checkbox } from "@arco-design/web-react";
+import {
+  Form,
+  Input,
+  Button,
+  Checkbox,
+  Typography,
+} from "@arco-design/web-react";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
@@ -35,6 +41,7 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
+      <Typography.Title>Ether Pay</Typography.Title>
       <Form style={{ width: 600 }} autoComplete="off" layout="vertical">
         <FormItem label="Order Id">
           <Input
@@ -65,7 +72,9 @@ export default function Home() {
           <Input value={payment.timeslot || ""} />
         </FormItem>
         <FormItem>
-          <Checkbox>I&#39;m aware of the risk</Checkbox>
+          <Checkbox>
+            I&#39;m aware of the risk that I might lose all my money!
+          </Checkbox>
         </FormItem>
         <FormItem>
           <Button type="primary">Next</Button>

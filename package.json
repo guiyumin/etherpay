@@ -11,14 +11,14 @@
   "dependencies": {
     "@arco-design/web-react": "^2.62.1",
     "ethers": "^6.12.1",
-    "next": "14.2.3",
-    "react": "^18",
-    "react-dom": "^18"
+    "next": "14.2.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
     "typescript": "^5"
