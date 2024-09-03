@@ -9,10 +9,6 @@ const PayerSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please provide the payer's email"],
   },
-  address: {
-    type: String,
-    required: [true, "Please provide the payer's address"],
-  },
 });
 
 export interface Orders extends mongoose.Document {

@@ -1,15 +1,17 @@
 "use client";
 
-import styles from "./page.module.css";
+import styles from "./page.module.scss";
 import {
   Form,
   Input,
   Button,
   Checkbox,
   Typography,
+  Message,
 } from "@arco-design/web-react";
+import { IconCopy } from "@arco-design/web-react/icon";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const FormItem = Form.Item;
 
@@ -17,16 +19,29 @@ export default function Home() {
   const searchParams = useSearchParams();
 
   const orderId = searchParams.get("orderId");
-  const receiver = searchParams.get("receiver");
   const amount = searchParams.get("amount");
   const timeslot = searchParams.get("timeslot");
+
+  const [receiver, setReceiver] = useState("");
+
+  useEffect(() => {
+    fetch("/api/receiver")
+      .then((res) => res.json())
+      .then((data) => setReceiver(data.receiver))
+      .catch((err) => console.error(err));
+  }, []);
 
   const [payment, setPayment] = useState(() => {
     return {
       orderId,
       receiver,
+      payer: {
+        name: "",
+        email: "",
+      },
       amount,
       timeslot,
+      status: "initiated",
     };
   });
 
@@ -42,21 +57,36 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <Typography.Title>Ether Pay</Typography.Title>
-      <Form style={{ width: 600 }} autoComplete="off" layout="vertical">
+      <Form
+        style={{ width: 600 }}
+        autoComplete="off"
+        layout="vertical"
+        className={styles.form}
+      >
         <FormItem label="Order Id">
           <Input
             placeholder="please enter the order id"
             value={payment.orderId || ""}
             onChange={handleChange}
             name="orderId"
+            autoFocus
           />
         </FormItem>
         <FormItem label="Receiver Address (USDT ERC20)">
           <Input
             placeholder="please enter receiver's address"
-            value={payment.receiver || ""}
-            onChange={handleChange}
+            value={receiver}
             name="receiver"
+            readOnly
+            suffix={
+              <IconCopy
+                className={styles.iconCopy}
+                onClick={() => {
+                  navigator.clipboard.writeText(receiver);
+                  Message.success("Copied to clipboard");
+                }}
+              />
+            }
           />
         </FormItem>
         <FormItem label="Amount">
@@ -68,8 +98,28 @@ export default function Home() {
             name="amount"
           />
         </FormItem>
+        <FormItem label="Payer Name">
+          <Input
+            placeholder="please enter the payer's name"
+            value={payment.payer.name}
+            onChange={handleChange}
+            name="payer.name"
+          />
+        </FormItem>
+        <FormItem label="Payer Email">
+          <Input
+            placeholder="please enter the payer's email"
+            value={payment.payer.email}
+            onChange={handleChange}
+            name="payer.email"
+            type="email"
+          />
+        </FormItem>
         <FormItem label="timeslot" hidden>
           <Input value={payment.timeslot || ""} />
+        </FormItem>
+        <FormItem label="status" hidden>
+          <Input value={payment.status} />
         </FormItem>
         <FormItem>
           <Checkbox>
