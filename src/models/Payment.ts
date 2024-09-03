@@ -1,19 +1,9 @@
 import mongoose from "mongoose";
 
-const PayerSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, "Please provide the payer's name"],
-  },
-  email: {
-    type: String,
-    required: [true, "Please provide the payer's email"],
-  },
-});
-
 export interface Payments extends mongoose.Document {
   orderId: string;
-  payer: typeof PayerSchema;
+  payer_name: string;
+  payer_email: string;
   receiver: string;
   amount: number;
   timeslot: string;
@@ -32,11 +22,14 @@ const PaymentSchema = new mongoose.Schema<Payments>({
     type: String,
     required: [true, "Please provide an id for this order."],
   },
-  payer: {
-    type: PayerSchema,
-    required: [true, "Please provide the payer"],
+  payer_name: {
+    type: String,
+    required: [true, "Please provide the payer's name"],
   },
-
+  payer_email: {
+    type: String,
+    required: [true, "Please provide the payer's email"],
+  },
   receiver: {
     type: String,
     required: [true, "Please provide the receiver"],

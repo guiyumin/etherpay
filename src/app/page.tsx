@@ -59,10 +59,8 @@ export default function Home() {
     // default is undefined, if user select one, it will be a string
     // if user doesn't select, it will be undefined and there will be error
     receiver: undefined,
-    payer: {
-      name: "",
-      email: "",
-    },
+    payer_name: "",
+    payer_email: "",
     amount,
     timeslot,
     status: "initiated",
@@ -147,17 +145,17 @@ export default function Home() {
         <FormItem label="Payer Name">
           <Input
             placeholder="please enter the payer's name"
-            value={payment.payer.name}
+            value={payment.payer_name}
             onChange={handleChange}
-            name="payer.name"
+            name="payer_name"
           />
         </FormItem>
         <FormItem label="Payer Email">
           <Input
             placeholder="please enter the payer's email"
-            value={payment.payer.email}
+            value={payment.payer_email}
             onChange={handleChange}
-            name="payer.email"
+            name="payer_email"
             type="email"
           />
         </FormItem>
