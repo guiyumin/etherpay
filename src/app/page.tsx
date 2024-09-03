@@ -9,41 +9,63 @@ import {
   Typography,
   Message,
   Result,
+  Select,
 } from "@arco-design/web-react";
 import { IconCopy } from "@arco-design/web-react/icon";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Payment } from "root/types/Payment";
 
 const FormItem = Form.Item;
 
 export default function Home() {
   const searchParams = useSearchParams();
 
-  const orderId = searchParams.get("orderId");
-  const amount = searchParams.get("amount");
-  const timeslot = searchParams.get("timeslot");
+  const orderId = searchParams.get("orderId") || "";
+  const amount = searchParams.get("amount") || "";
+  const timeslot = searchParams.get("timeslot") || "";
 
-  const [receiver, setReceiver] = useState("");
+  const [receiver, setReceiver] = useState<string | string[]>();
 
   useEffect(() => {
     fetch("/api/receiver")
       .then((res) => res.json())
-      .then((data) => setReceiver(data.receiver))
+      .then((data) => {
+        if (data.receiver) {
+          const _receiver = data.receiver.includes(",")
+            ? data.receiver.split(",")
+            : data.receiver;
+          setReceiver(_receiver);
+        } else {
+          Message.error("No receiving address found");
+        }
+      })
       .catch((err) => console.error(err));
   }, []);
 
-  const [payment, setPayment] = useState(() => {
-    return {
-      orderId,
-      receiver,
-      payer: {
-        name: "",
-        email: "",
-      },
-      amount,
-      timeslot,
-      status: "initiated",
-    };
+  useEffect(() => {
+    if (typeof receiver === "string") {
+      setPayment((p) => {
+        return {
+          ...p,
+          receiver,
+        };
+      });
+    }
+  }, [receiver]);
+
+  const [payment, setPayment] = useState<Payment>({
+    orderId,
+    // default is undefined, if user select one, it will be a string
+    // if user doesn't select, it will be undefined and there will be error
+    receiver: undefined,
+    payer: {
+      name: "",
+      email: "",
+    },
+    amount,
+    timeslot,
+    status: "initiated",
   });
 
   const handleChange = (v: string, e: any) => {
@@ -74,21 +96,44 @@ export default function Home() {
           />
         </FormItem>
         <FormItem label="Receiver Address (USDT ERC20)">
-          <Input
-            placeholder="please enter receiver's address"
-            value={receiver}
-            name="receiver"
-            readOnly
-            suffix={
-              <IconCopy
-                className={styles.iconCopy}
-                onClick={() => {
-                  navigator.clipboard.writeText(receiver);
-                  Message.success("Copied to clipboard");
-                }}
-              />
-            }
-          />
+          {typeof receiver === "string" && (
+            <Input
+              placeholder="please enter receiver's address"
+              value={receiver}
+              name="receiver"
+              readOnly
+              suffix={
+                <IconCopy
+                  className={styles.iconCopy}
+                  onClick={() => {
+                    navigator.clipboard.writeText(receiver);
+                    Message.success("Copied to clipboard");
+                  }}
+                />
+              }
+            />
+          )}
+
+          {Array.isArray(receiver) && (
+            <Select
+              placeholder="please select receiving address"
+              options={receiver.map((r) => ({
+                label: r,
+                value: r,
+              }))}
+              allowClear
+              onChange={(v) => {
+                setPayment((p) => {
+                  return {
+                    ...p,
+                    receiver: v,
+                  };
+                });
+                navigator.clipboard.writeText(v);
+                Message.success("Copied to clipboard");
+              }}
+            />
+          )}
         </FormItem>
         <FormItem label="Amount">
           <Input

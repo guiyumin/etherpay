@@ -11,7 +11,7 @@ const PayerSchema = new mongoose.Schema({
   },
 });
 
-export interface Orders extends mongoose.Document {
+export interface Payments extends mongoose.Document {
   orderId: string;
   payer: typeof PayerSchema;
   receiver: string;
@@ -26,8 +26,8 @@ export interface Orders extends mongoose.Document {
     | "failed";
 }
 
-/* PetSchema will correspond to a collection in your MongoDB database. */
-const OrderSchema = new mongoose.Schema<Orders>({
+/* PaymentSchema will correspond to a collection in your MongoDB database. */
+const PaymentSchema = new mongoose.Schema<Payments>({
   orderId: {
     type: String,
     required: [true, "Please provide an id for this order."],
@@ -57,4 +57,4 @@ const OrderSchema = new mongoose.Schema<Orders>({
 });
 
 export default mongoose.models.Order ||
-  mongoose.model<Orders>("Order", OrderSchema);
+  mongoose.model<Payments>("Payment", PaymentSchema);
