@@ -8,6 +8,7 @@ import {
   Checkbox,
   Typography,
   Message,
+  Result,
 } from "@arco-design/web-react";
 import { IconCopy } from "@arco-design/web-react/icon";
 import { useSearchParams } from "next/navigation";
@@ -121,11 +122,24 @@ export default function Home() {
         <FormItem label="status" hidden>
           <Input value={payment.status} />
         </FormItem>
-        <FormItem>
+        {/* <FormItem
+          label={<Result status="warning" title="Risk Warning"></Result>}
+        >
           <Checkbox>
             I&#39;m aware of the risk that I might lose all my money!
           </Checkbox>
         </FormItem>
+        <FormItem
+          label={
+            <Result status="warning" title="ERC-20 deposits only"></Result>
+          }
+        >
+          <Checkbox>
+            Please confirm that your USDT is an ERC-20 token and that you are
+            depositing it via the Ethereum Network. You understand that
+            depositing assets on the wrong network may lead to a loss of funds.
+          </Checkbox>
+        </FormItem> */}
         <FormItem>
           <Button type="primary">Next</Button>
         </FormItem>
