@@ -51,7 +51,7 @@ export default function Home() {
           payment={payment}
         />
       )}
-      {step === "warning" && <Warnings />}
+      {step === "warning" && <Warnings goToStep={goToStep} />}
     </main>
   );
 }
