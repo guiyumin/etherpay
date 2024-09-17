@@ -3,21 +3,45 @@ import { IconCopy } from "@arco-design/web-react/icon";
 import { useEffect, useState } from "react";
 import { API_URL } from "root/utils/api";
 import styles from "./PaymentForm.module.scss";
-import { Payment } from "root/types/Payment";
+import { Payment, PaymentStep } from "root/types/Payment";
+import isEmail from "validator/es/lib/isEmail";
 
 const FormItem = Form.Item;
 
 type Props = {
   payment: Payment;
-  handleSubmit: (values: any) => void;
-
+  goToStep: (step: PaymentStep) => void;
   handleUpdatePayment: (k: string, v: string) => void;
 };
 
 export const PaymentForm = (props: Props) => {
-  const { payment, handleSubmit, handleUpdatePayment } = props;
+  const { payment, goToStep, handleUpdatePayment } = props;
 
   const [receiver, setReceiver] = useState<string | string[]>();
+
+  const handleClickNext = () => {
+    if (!payment.receiver) {
+      Message.error("Please enter receiver address");
+      return;
+    }
+
+    if (!payment.orderId) {
+      Message.error("Please enter orderId");
+      return;
+    }
+
+    if (!payment.amount || Number(payment.amount) <= 0) {
+      Message.error("Please enter amount");
+      return;
+    }
+
+    if (!payment.payer_email || !isEmail(payment.payer_email)) {
+      Message.error("Please enter payer email");
+      return;
+    }
+
+    goToStep("warning");
+  };
 
   useEffect(() => {
     fetch(API_URL.GET_RECEIVER)
@@ -43,13 +67,7 @@ export const PaymentForm = (props: Props) => {
   }, [receiver]);
 
   return (
-    <Form
-      style={{ width: 600 }}
-      autoComplete="off"
-      layout="vertical"
-      className={styles.form}
-      onSubmit={handleSubmit}
-    >
+    <Form autoComplete="off" layout="vertical" className={styles.form}>
       <FormItem label="Order Id" rules={[{ required: true }]}>
         <Input
           placeholder="please enter the order id"
@@ -105,6 +123,7 @@ export const PaymentForm = (props: Props) => {
           value={payment.amount || "0"}
           onChange={(v) => handleUpdatePayment("amount", v)}
           name="amount"
+          type="number"
           required
         />
       </FormItem>
@@ -129,26 +148,11 @@ export const PaymentForm = (props: Props) => {
       <FormItem label="status" hidden>
         <Input value={payment.status} />
       </FormItem>
-      {/* <FormItem
-          label={<Result status="warning" title="Risk Warning"></Result>}
-        >
-          <Checkbox>
-            I&#39;m aware of the risk that I might lose all my money!
-          </Checkbox>
-        </FormItem>
-        <FormItem
-          label={
-            <Result status="warning" title="ERC-20 deposits only"></Result>
-          }
-        >
-          <Checkbox>
-            Please confirm that your USDT is an ERC-20 token and that you are
-            depositing it via the Ethereum Network. You understand that
-            depositing assets on the wrong network may lead to a loss of funds.
-          </Checkbox>
-        </FormItem> */}
+
       <FormItem>
-        <Button type="primary">Next</Button>
+        <Button type="primary" htmlType="submit" onClick={handleClickNext}>
+          Next
+        </Button>
       </FormItem>
     </Form>
   );

@@ -12,3 +12,5 @@ export type Payment = {
     | "refunded"
     | "failed";
 };
+
+export type PaymentStep = "form" | "warning" | "success" | "error";
