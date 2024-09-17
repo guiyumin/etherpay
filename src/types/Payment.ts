@@ -4,7 +4,6 @@ export type Payment = {
   payer_name: string;
   payer_email: string;
   amount: string;
-  timeslot: string;
   status:
     | "initiated"
     | "pending"

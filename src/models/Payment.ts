@@ -6,48 +6,56 @@ export interface Payments extends mongoose.Document {
   payer_email: string;
   receiver: string;
   amount: number;
-  timeslot: string;
   status:
     | "initiated"
     | "pending"
     | "paid"
     | "cancelled"
     | "refunded"
-    | "failed";
+    | "failed"
+    | "expired"
+    | "completed"
+    | "onchain";
 }
 
 /* PaymentSchema will correspond to a collection in your MongoDB database. */
 const PaymentSchema = new mongoose.Schema<Payments>({
   orderId: {
     type: String,
-    required: [true, "Please provide an id for this order."],
+    required: [true, "Please provide order id."],
   },
   payer_name: {
     type: String,
-    required: [true, "Please provide the payer's name"],
+    required: [true, "Please provide payer's name"],
   },
   payer_email: {
     type: String,
-    required: [true, "Please provide the payer's email"],
+    required: [true, "Please provide payer's email"],
   },
   receiver: {
     type: String,
-    required: [true, "Please provide the receiver"],
+    required: [true, "Please provide receiver"],
   },
   amount: {
     type: Number,
-    required: [true, "Please provide the amount"],
-  },
-  timeslot: {
-    type: String,
-    required: [true, "Please provide the timeslot"],
+    required: [true, "Please provide amount"],
   },
   status: {
     type: String,
-    enum: ["initiated", "pending", "paid", "cancelled", "refunded", "failed"],
+    enum: [
+      "initiated",
+      "pending",
+      "paid",
+      "cancelled",
+      "refunded",
+      "failed",
+      "expired",
+      "completed",
+      "onchain",
+    ],
     default: "initiated",
   },
 });
 
-export default mongoose.models.Order ||
+export default mongoose.models.Payment ||
   mongoose.model<Payments>("Payment", PaymentSchema);

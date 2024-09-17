@@ -23,7 +23,6 @@ export default function Home() {
 
   const orderId = searchParams.get("orderId") || "";
   const amount = searchParams.get("amount") || "";
-  const timeslot = searchParams.get("timeslot") || "";
 
   const [receiver, setReceiver] = useState<string | string[]>();
 
@@ -62,7 +61,6 @@ export default function Home() {
     payer_name: "",
     payer_email: "",
     amount,
-    timeslot,
     status: "initiated",
   });
 
@@ -158,9 +156,6 @@ export default function Home() {
             name="payer_email"
             type="email"
           />
-        </FormItem>
-        <FormItem label="timeslot" hidden>
-          <Input value={payment.timeslot || ""} />
         </FormItem>
         <FormItem label="status" hidden>
           <Input value={payment.status} />
